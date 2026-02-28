@@ -17,5 +17,7 @@ class Settings(BaseSettings):
     STAGE: str = os.environ.get("STAGE", "local")
     DEBUG: bool = STAGE == "local"
 
+    MISTRAL_API_KEY: str = os.environ.get("MISTRAL_API_KEY", "")
+
 
 settings = Settings()

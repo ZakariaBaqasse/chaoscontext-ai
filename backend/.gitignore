@@ -1,1 +1,4 @@
 .env
+.agent_ids.json
+*/__pycache__/
+*.pyc

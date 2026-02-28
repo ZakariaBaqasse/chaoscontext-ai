@@ -1,0 +1,10 @@
+{
+  "messages": [
+    {
+      "channel": "#engineering",
+      "user": "CEO",
+      "date": "2026-02-27",
+      "text": "Hey team, scrap the email/password login for the MVP. It's taking too long to secure. Let's just drop in Google OAuth and call it a day."
+    }
+  ]
+}

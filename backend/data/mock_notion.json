@@ -1,0 +1,10 @@
+{
+  "docs": [
+    {
+      "id": "doc_1",
+      "title": "MVP Login & Authentication Specs",
+      "last_updated": "2026-01-15",
+      "content": "For the MVP, we will implement a standard Email and Password login system. Do not use third-party providers yet to save time."
+    }
+  ]
+}
