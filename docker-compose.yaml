@@ -1,0 +1,74 @@
+services:
+  api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    env_file:
+      # Kept in-repo so compose works out of the box.
+      - ./backend/.env
+    ports:
+      - "8080:8000"
+    command: >
+      sh -c "uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload"
+    develop:
+      watch:
+        - action: sync+restart
+          path: ./backend/app
+          target: /workspace/backend/app
+        - action: sync+restart
+          path: ./backend/alembic.ini
+          target: /workspace/backend/alembic.ini
+        - action: sync+restart
+          path: ./backend/migrations
+          target: /workspace/backend/migrations
+        - action: restart
+          path: ./backend/.env
+        - action: rebuild
+          path: ./backend/pyproject.toml
+        - action: rebuild
+          path: ./backend/uv.lock
+        - action: rebuild
+          path: ./backend/Dockerfile
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "5173:5173"
+    env_file:
+      - frontend/.env
+    volumes:
+      - frontend_node_modules:/app/node_modules
+    depends_on:
+      - api
+    command: >
+      sh -c "bun install --frozen-lockfile && bun run dev --host"
+    develop:
+      watch:
+        - action: sync
+          path: ./frontend/src
+          target: /app/src
+        - action: sync
+          path: ./frontend/svelte.config.js
+          target: /app/svelte.config.js
+        - action: sync
+          path: ./frontend/vite.config.ts
+          target: /app/vite.config.ts
+        - action: sync
+          path: ./frontend/tsconfig.json
+          target: /app/tsconfig.json
+        - action: sync
+          path: ./frontend/eslint.config.js
+          target: /app/eslint.config.js
+        - action: restart
+          path: ./frontend/.env
+        - action: rebuild
+          path: ./frontend/package.json
+        - action: rebuild
+          path: ./frontend/bun.lockb
+        - action: rebuild
+          path: ./frontend/Dockerfile.dev
+
+volumes:
+  frontend_node_modules:
